@@ -1,12 +1,19 @@
 [programs.localnet]
 deep_waifu_payment_contract = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
 
+[programs.devnet]
+deep_waifu_payment_contract = "nkZD6NGnpEo2pgNReaVf9sipLyrpwdEyVHvgjpE1tCS"
+
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "localnet"
 wallet = "/home/marcin/.config/solana/id.json"
+
+[provider.devnet]
+cluster = "devnet"
+wallet = "/home/marcin/.config/solana/devnet.json"
 
 [scripts]
 test = "mocha -t 1000000 tests/"
