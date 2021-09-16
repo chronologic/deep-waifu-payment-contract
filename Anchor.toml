@@ -1,8 +1,8 @@
 [programs.localnet]
-deep_waifu_payment_contract = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+deep_waifu_payment_contract = "deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ"
 
 [programs.devnet]
-deep_waifu_payment_contract = "nkZD6NGnpEo2pgNReaVf9sipLyrpwdEyVHvgjpE1tCS"
+deep_waifu_payment_contract = "deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ"
 
 [registry]
 url = "https://anchor.projectserum.com"

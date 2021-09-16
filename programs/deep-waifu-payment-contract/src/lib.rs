@@ -3,17 +3,18 @@ use anchor_lang::solana_program::system_program;
 use anchor_lang::solana_program::program::invoke;
 use anchor_lang::solana_program::system_instruction;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ");
 
 #[program]
 pub mod deep_waifu_payment_contract {
 
     use super::*;
     pub fn initialize(ctx: Context<Initialize>,
-        _bump: u8) -> ProgramResult {
+        bump: u8) -> ProgramResult {
         let my_pda = &mut ctx.accounts.my_pda;
 
         my_pda.authority = *ctx.accounts.authority.key;
+        my_pda.bump = bump;
 
         Ok(())
     }
@@ -105,4 +106,5 @@ pub struct PaymentStorage {
     pub max_count: u16,
     pub beneficiary: Pubkey,
     pub authority: Pubkey,
+    pub bump: u8,
 }
