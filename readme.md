@@ -6,7 +6,7 @@ change `Anchor.toml` and `src/.../Cargo.toml` `kebab-case`d program names to `sn
 
 `solana-keygen grind --ignore-case --starts-with deep:1` - put result in `target/deploy/<programname>-keypair.json` to get a vanity program address
 
-## `The given account is not owned by the executing program`
+## `ERROR: The given account is not owned by the executing program`
 
 - `anchor build`
 - `solana address -k target/deploy/<programname>-keypair.json`
