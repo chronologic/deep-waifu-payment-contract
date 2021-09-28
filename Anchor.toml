@@ -1,15 +1,23 @@
 [programs.localnet]
 deep_waifu_payment_contract = "deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ"
+mint = "DgA1MH2tKM3pipa7MKgJ22KexYEnwW2N9CCW4JEp64wz"
+day_beneficiary = "DAy4nShDN2bmHdYTebWmvsixbwRrC21SoQeynpuZcgGf"
 
 [programs.devnet]
 deep_waifu_payment_contract = "deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ"
+mint = "DgA1MH2tKM3pipa7MKgJ22KexYEnwW2N9CCW4JEp64wz"
+day_beneficiary = "DAy4nShDN2bmHdYTebWmvsixbwRrC21SoQeynpuZcgGf"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "localnet"
-wallet = "/home/marcin/.config/solana/id.json"
+wallet = "/home/marcin/.config/solana/localnet.json"
+
+[provider.localnet]
+cluster = "localnet"
+wallet = "/home/marcin/.config/solana/localnet.json"
 
 [provider.devnet]
 cluster = "devnet"

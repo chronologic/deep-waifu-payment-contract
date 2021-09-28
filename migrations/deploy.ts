@@ -1,9 +1,19 @@
 import * as anchor from "@project-serum/anchor";
+import * as serumCmn from "@project-serum/common";
+import * as splToken from "@solana/spl-token";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import toml from "toml";
+import fs from "fs";
 
 import idl from "../target/idl/deep_waifu_payment_contract.json";
 
-module.exports = async function (provider: anchor.Provider) {
+const CLUSTER = process.env.CLUSTER;
+
+const config = toml.parse(
+  fs.readFileSync(__dirname + "/../Anchor.toml").toString()
+);
+
+export = async function (provider: anchor.Provider) {
   // Configure client to use the provider.
   anchor.setProvider(provider);
 
@@ -16,6 +26,24 @@ module.exports = async function (provider: anchor.Provider) {
     provider
   );
 
+  const TOKEN_DECIMALS = 8;
+  const LAMPORTS_PER_TOKEN = 10 ** TOKEN_DECIMALS;
+
+  const mint = new anchor.web3.PublicKey(config.programs[CLUSTER].mint);
+  const dayBeneficiary = new anchor.web3.PublicKey(
+    config.programs[CLUSTER].day_beneficiary
+  );
+
+  const dayBeneficiaryToken = await splToken.Token.getAssociatedTokenAddress(
+    splToken.ASSOCIATED_TOKEN_PROGRAM_ID,
+    splToken.TOKEN_PROGRAM_ID,
+    mint,
+    dayBeneficiary,
+    false
+  );
+
+  console.log("dayBeneficiaryToken", dayBeneficiaryToken.toBase58());
+
   await initialize();
   await setParams();
 
@@ -24,18 +52,22 @@ module.exports = async function (provider: anchor.Provider) {
   async function initialize() {
     console.log("initializing...");
 
-    console.log(program.programId.toBase58());
+    console.log("program", program.programId.toBase58());
 
     const [paymentStoragePda, paymentStorageBump] =
       await getPaymentStoragePdaAddress(program.programId);
 
-    console.log(paymentStoragePda.toBase58(), paymentStorageBump);
+    console.log(
+      "paymentStoragePda",
+      paymentStoragePda.toBase58(),
+      paymentStorageBump
+    );
 
     const tx = await program.rpc.initialize(paymentStorageBump, {
       accounts: {
         myPda: paymentStoragePda,
         authority: provider.wallet.publicKey,
-        // rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+        rent: anchor.web3.SYSVAR_RENT_PUBKEY,
         systemProgram: anchor.web3.SystemProgram.programId,
       },
     });
@@ -56,16 +88,20 @@ module.exports = async function (provider: anchor.Provider) {
       await getPaymentStoragePdaAddress(program.programId);
 
     const priceLamports = new anchor.BN(Math.ceil(LAMPORTS_PER_SOL * 0.5));
-    const count = new anchor.BN(1);
+    const priceDay = new anchor.BN(Math.ceil(LAMPORTS_PER_TOKEN * 100));
+    const count = new anchor.BN(0);
     const maxCount = new anchor.BN(1_000);
     const beneficiaryPubkey = provider.wallet.publicKey;
+    const beneficiaryDayPubkey = provider.wallet.publicKey;
     const newAuthorityPubkey = null;
 
     const tx = await program.rpc.setParams(
       priceLamports,
+      priceDay,
       count,
       maxCount,
       beneficiaryPubkey,
+      beneficiaryDayPubkey,
       newAuthorityPubkey,
       {
         accounts: {
