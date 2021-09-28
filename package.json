@@ -20,7 +20,10 @@
     "validator-logs": "solana logs --url localhost",
     "test": "anchor test",
     "deploy:localnet": "anchor deploy --provider.cluster localnet",
+    "deploy:devnet": "anchor deploy --provider.cluster devnet",
     "createMint:localnet": "CLUSTER=localnet ts-node migrations/createMint.ts",
-    "migrate:localnet": "CLUSTER=localnet ANCHOR_WALLET=$(toml < ./Anchor.toml | json provider.localnet.wallet) anchor migrate --provider.cluster localnet"
+    "createMint:devnet": "CLUSTER=devnet ts-node migrations/createMint.ts",
+    "migrate:localnet": "CLUSTER=localnet ANCHOR_WALLET=$(toml < ./Anchor.toml | json provider.localnet.wallet) anchor migrate --provider.cluster localnet",
+    "migrate:devnet": "CLUSTER=devnet ANCHOR_WALLET=$(toml < ./Anchor.toml | json provider.devnet.wallet) anchor migrate --provider.cluster devnet"
   }
 }

@@ -43,9 +43,9 @@ async function createMint() {
   const TOKEN_DECIMALS = 8;
   const LAMPORTS_PER_TOKEN = 10 ** TOKEN_DECIMALS;
 
-  const solToAidrop = 3;
-  console.log(`airdropping ${solToAidrop} SOL to main wallet...`);
-  await airdropSol(wallet.publicKey, solToAidrop);
+  const solToAirdrop = 1;
+  console.log(`airdropping ${solToAirdrop} SOL to main wallet...`);
+  await airdropSol(wallet.publicKey, solToAirdrop);
 
   console.log("creating mint...");
   const mint = await splToken.Token.createMint(

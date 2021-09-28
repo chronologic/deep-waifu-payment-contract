@@ -1,5 +1,4 @@
 import * as anchor from "@project-serum/anchor";
-import * as serumCmn from "@project-serum/common";
 import * as splToken from "@solana/spl-token";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import toml from "toml";
@@ -46,6 +45,7 @@ export = async function (provider: anchor.Provider) {
 
   await initialize();
   await setParams();
+  // await updateParams();
 
   //////////////////////
 
@@ -92,7 +92,7 @@ export = async function (provider: anchor.Provider) {
     const count = new anchor.BN(0);
     const maxCount = new anchor.BN(1_000);
     const beneficiaryPubkey = provider.wallet.publicKey;
-    const beneficiaryDayPubkey = provider.wallet.publicKey;
+    const beneficiaryDayPubkey = dayBeneficiaryToken;
     const newAuthorityPubkey = null;
 
     const tx = await program.rpc.setParams(
@@ -119,6 +119,45 @@ export = async function (provider: anchor.Provider) {
     );
 
     console.log("params set", myPdaAccount);
+  }
+  async function updateParams() {
+    console.log("updating params...");
+
+    const [paymentStoragePda, paymentStorageBump] =
+      await getPaymentStoragePdaAddress(program.programId);
+
+    const priceLamports = null;
+    const priceDay = null;
+    const count = null;
+    const maxCount = null;
+    const beneficiaryPubkey = null;
+    const beneficiaryDayPubkey = dayBeneficiaryToken;
+    const newAuthorityPubkey = null;
+
+    const tx = await program.rpc.setParams(
+      priceLamports,
+      priceDay,
+      count,
+      maxCount,
+      beneficiaryPubkey,
+      beneficiaryDayPubkey,
+      newAuthorityPubkey,
+      {
+        accounts: {
+          myPda: paymentStoragePda,
+          authority: provider.wallet.publicKey,
+          beneficiary: beneficiaryPubkey,
+        },
+      }
+    );
+
+    console.log("update params tx", tx);
+
+    const myPdaAccount = await program.account.paymentStorage.fetch(
+      paymentStoragePda
+    );
+
+    console.log("params updated", myPdaAccount);
   }
 };
 

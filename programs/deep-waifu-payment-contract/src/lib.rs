@@ -4,7 +4,7 @@ use anchor_lang::solana_program::system_instruction;
 use anchor_lang::solana_program::system_program;
 use anchor_spl::token::{self, Transfer};
 
-declare_id!("deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ");
+declare_id!("DeePHrt6ourDDcEKBB7CRx9qRSRSYpUvSN3Keqd6EXUX");
 
 #[program]
 pub mod deep_waifu_payment_contract {

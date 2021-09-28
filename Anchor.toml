@@ -1,11 +1,11 @@
 [programs.localnet]
-deep_waifu_payment_contract = "deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ"
+deep_waifu_payment_contract = "DeePHrt6ourDDcEKBB7CRx9qRSRSYpUvSN3Keqd6EXUX"
 mint = "DgA1MH2tKM3pipa7MKgJ22KexYEnwW2N9CCW4JEp64wz"
 day_beneficiary = "DAy4nShDN2bmHdYTebWmvsixbwRrC21SoQeynpuZcgGf"
 
 [programs.devnet]
-deep_waifu_payment_contract = "deepDCigiqV6vbvjbXQRvYsQGcWc7ynVgVo3qBAj2DJ"
-mint = "DgA1MH2tKM3pipa7MKgJ22KexYEnwW2N9CCW4JEp64wz"
+deep_waifu_payment_contract = "DeePHrt6ourDDcEKBB7CRx9qRSRSYpUvSN3Keqd6EXUX"
+mint = "FFQ3DYxrU8hBk32WAbyEhpuEvZYtcRcfFXMNH1D5aoDr"
 day_beneficiary = "DAy4nShDN2bmHdYTebWmvsixbwRrC21SoQeynpuZcgGf"
 
 [registry]
