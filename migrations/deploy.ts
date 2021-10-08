@@ -42,7 +42,7 @@ export = async function (provider: anchor.Provider) {
       false
     );
 
-  const priceLamports = new anchor.BN(Math.ceil(LAMPORTS_PER_SOL * 0.75));
+  const priceLamports = new anchor.BN(Math.ceil(LAMPORTS_PER_SOL * 0.65));
   const priceDay = new anchor.BN(Math.ceil(LAMPORTS_PER_TOKEN * 333));
   const count = new anchor.BN(0);
   const maxCount = new anchor.BN(1_000);
@@ -159,7 +159,7 @@ export = async function (provider: anchor.Provider) {
     const count = null;
     const maxCount = null;
     const beneficiaryPubkey = null;
-    const beneficiaryDayPubkey = dayBeneficiaryTokenPubkey;
+    const beneficiaryDayPubkey = null;
     const newAuthorityPubkey = null;
 
     const tx = await program.rpc.setParams(
