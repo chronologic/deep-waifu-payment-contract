@@ -2,16 +2,16 @@
   "dependencies": {
     "@project-serum/anchor": "^0.15.0",
     "@project-serum/common": "^0.0.1-beta.3",
-    "json": "^11.0.0",
-    "toml": "^3.0.0",
-    "toml-cli": "^2.0.0"
-  },
-  "devDependencies": {
     "@solana/spl-token": "^0.1.8",
     "@types/mocha": "^9.0.0",
     "assert": "^2.0.0",
+    "json": "^11.0.0",
     "mocha": "^9.0.3",
+    "prompt-sync": "^4.2.0",
+    "toml": "^3.0.0",
+    "toml-cli": "^2.0.0",
     "ts-mocha": "^8.0.0",
+    "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
   },
   "scripts": {
@@ -20,10 +20,14 @@
     "validator-logs": "solana logs --url localhost",
     "test": "anchor test",
     "deploy:localnet": "anchor deploy --provider.cluster localnet",
-    "deploy:devnet": "anchor deploy --provider.cluster devnet",
     "createMint:localnet": "CLUSTER=localnet ts-node migrations/createMint.ts",
+    "migrate:localnet": "CLUSTER=localnet ts-node migrations/anchorMigrate.ts",
     "createMint:devnet": "CLUSTER=devnet ts-node migrations/createMint.ts",
-    "migrate:localnet": "CLUSTER=localnet ANCHOR_WALLET=$(toml < ./Anchor.toml | json provider.localnet.wallet) anchor migrate --provider.cluster localnet",
-    "migrate:devnet": "CLUSTER=devnet ANCHOR_WALLET=$(toml < ./Anchor.toml | json provider.devnet.wallet) anchor migrate --provider.cluster devnet"
+    "deploy:devnet": "anchor deploy --provider.cluster devnet",
+    "migrate:devnet": "CLUSTER=devnet ts-node migrations/anchorMigrate.ts",
+    "deploy:testnet": "anchor deploy --provider.cluster testnet --provider.wallet $(toml < ./Anchor.toml | json provider.testnet.wallet)",
+    "migrate:testnet": "CLUSTER=testnet ts-node migrations/anchorMigrate.ts",
+    "deploy:mainnet": "anchor deploy --provider.cluster mainnet --provider.wallet $(toml < ./Anchor.toml | json provider.mainnet.wallet)",
+    "migrate:mainnet": "CLUSTER=mainnet ts-node migrations/anchorMigrate.ts"
   }
 }

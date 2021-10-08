@@ -35,6 +35,10 @@ Run `anchor test`
 
 ## 🔗 Deployment
 
+Before deployment, update the `Anchor.toml` file with the following values:
+
+- `[programs:<cluster>] day_mint` - DAY token mint address. This is the token that will be accepted as payment method alternative to SOL.
+
 Run `npm run deploy:<cluster>` to deploy the program.
 
 Run `npm run migrate:<cluster>` to initialize and configure the deployed program.

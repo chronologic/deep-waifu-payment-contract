@@ -3,8 +3,11 @@ import * as splToken from "@solana/spl-token";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import toml from "toml";
 import fs from "fs";
+import makePrompt from "prompt-sync";
 
 import idl from "../target/idl/deep_waifu_payment_contract.json";
+
+const prompt = makePrompt();
 
 const CLUSTER = process.env.CLUSTER;
 
@@ -28,20 +31,45 @@ export = async function (provider: anchor.Provider) {
   const TOKEN_DECIMALS = 8;
   const LAMPORTS_PER_TOKEN = 10 ** TOKEN_DECIMALS;
 
-  const mint = new anchor.web3.PublicKey(config.programs[CLUSTER].mint);
-  const dayBeneficiary = new anchor.web3.PublicKey(
-    config.programs[CLUSTER].day_beneficiary
-  );
+  const dayMint = new anchor.web3.PublicKey(config.programs[CLUSTER].day_mint);
 
-  const dayBeneficiaryToken = await splToken.Token.getAssociatedTokenAddress(
-    splToken.ASSOCIATED_TOKEN_PROGRAM_ID,
-    splToken.TOKEN_PROGRAM_ID,
-    mint,
-    dayBeneficiary,
-    false
-  );
+  const dayBeneficiaryTokenPubkey =
+    await splToken.Token.getAssociatedTokenAddress(
+      splToken.ASSOCIATED_TOKEN_PROGRAM_ID,
+      splToken.TOKEN_PROGRAM_ID,
+      dayMint,
+      provider.wallet.publicKey,
+      false
+    );
 
-  console.log("dayBeneficiaryToken", dayBeneficiaryToken.toBase58());
+  const priceLamports = new anchor.BN(Math.ceil(LAMPORTS_PER_SOL * 0.75));
+  const priceDay = new anchor.BN(Math.ceil(LAMPORTS_PER_TOKEN * 333));
+  const count = new anchor.BN(0);
+  const maxCount = new anchor.BN(1_000);
+  const beneficiaryPubkey = provider.wallet.publicKey;
+
+  console.log("cluster:", CLUSTER);
+  console.log("signer:", provider.wallet.publicKey.toBase58());
+  console.log("program:", program.programId.toBase58());
+  console.log("beneficiary:", beneficiaryPubkey.toBase58());
+  console.log(
+    "DAY beneficiary (token addres):",
+    dayBeneficiaryTokenPubkey.toBase58()
+  );
+  console.log("DAY mint:", dayMint.toBase58());
+  console.log("price SOL:", priceLamports.toNumber() / LAMPORTS_PER_SOL);
+  console.log("price DAY:", priceDay.toNumber() / LAMPORTS_PER_TOKEN);
+  console.log("item count:", count.toNumber());
+  console.log("item MAX count:", maxCount.toNumber());
+
+  console.log("");
+
+  const userInput = prompt("Does the above look good? (Y/n): ", "Y");
+
+  if (userInput !== "Y") {
+    console.log("Stopping");
+    return;
+  }
 
   await initialize();
   await setParams();
@@ -87,12 +115,12 @@ export = async function (provider: anchor.Provider) {
     const [paymentStoragePda, paymentStorageBump] =
       await getPaymentStoragePdaAddress(program.programId);
 
-    const priceLamports = new anchor.BN(Math.ceil(LAMPORTS_PER_SOL * 0.5));
-    const priceDay = new anchor.BN(Math.ceil(LAMPORTS_PER_TOKEN * 100));
-    const count = new anchor.BN(0);
-    const maxCount = new anchor.BN(1_000);
-    const beneficiaryPubkey = provider.wallet.publicKey;
-    const beneficiaryDayPubkey = dayBeneficiaryToken;
+    // const priceLamports = new anchor.BN(Math.ceil(LAMPORTS_PER_SOL * 0.75));
+    // const priceDay = new anchor.BN(Math.ceil(LAMPORTS_PER_TOKEN * 333));
+    // const count = new anchor.BN(0);
+    // const maxCount = new anchor.BN(1_000);
+    // const beneficiaryPubkey = provider.wallet.publicKey;
+    // const beneficiaryDayPubkey = dayBeneficiaryTokenPubkey;
     const newAuthorityPubkey = null;
 
     const tx = await program.rpc.setParams(
@@ -101,7 +129,7 @@ export = async function (provider: anchor.Provider) {
       count,
       maxCount,
       beneficiaryPubkey,
-      beneficiaryDayPubkey,
+      dayBeneficiaryTokenPubkey,
       newAuthorityPubkey,
       {
         accounts: {
@@ -131,7 +159,7 @@ export = async function (provider: anchor.Provider) {
     const count = null;
     const maxCount = null;
     const beneficiaryPubkey = null;
-    const beneficiaryDayPubkey = dayBeneficiaryToken;
+    const beneficiaryDayPubkey = dayBeneficiaryTokenPubkey;
     const newAuthorityPubkey = null;
 
     const tx = await program.rpc.setParams(

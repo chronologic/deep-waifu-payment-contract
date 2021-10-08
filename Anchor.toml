@@ -1,12 +1,14 @@
 [programs.localnet]
 deep_waifu_payment_contract = "DeePHrt6ourDDcEKBB7CRx9qRSRSYpUvSN3Keqd6EXUX"
-mint = "DgA1MH2tKM3pipa7MKgJ22KexYEnwW2N9CCW4JEp64wz"
-day_beneficiary = "DAy4nShDN2bmHdYTebWmvsixbwRrC21SoQeynpuZcgGf"
+day_mint = "DgA1MH2tKM3pipa7MKgJ22KexYEnwW2N9CCW4JEp64wz"
 
 [programs.devnet]
 deep_waifu_payment_contract = "DeePHrt6ourDDcEKBB7CRx9qRSRSYpUvSN3Keqd6EXUX"
-mint = "FFQ3DYxrU8hBk32WAbyEhpuEvZYtcRcfFXMNH1D5aoDr"
-day_beneficiary = "DAy4nShDN2bmHdYTebWmvsixbwRrC21SoQeynpuZcgGf"
+day_mint = "FFQ3DYxrU8hBk32WAbyEhpuEvZYtcRcfFXMNH1D5aoDr"
+
+[programs.mainnet]
+deep_waifu_payment_contract = "DeePHrt6ourDDcEKBB7CRx9qRSRSYpUvSN3Keqd6EXUX"
+day_mint = "DQP2edsDc4bApMaQ4pRim6AE18yCjHpohFLhnWbxc4um"
 
 [registry]
 url = "https://anchor.projectserum.com"
@@ -22,6 +24,10 @@ wallet = "/home/marcin/.config/solana/localnet.json"
 [provider.devnet]
 cluster = "devnet"
 wallet = "/home/marcin/.config/solana/devnet.json"
+
+[provider.mainnet]
+cluster = "mainnet"
+wallet = "/home/marcin/.config/solana/deepwaifu_mainnet.json"
 
 [scripts]
 test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
